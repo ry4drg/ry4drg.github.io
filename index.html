@@ -62,7 +62,12 @@
   <!-- Ghost cursor effect -->
   <script src="https://unpkg.com/cursor-effects@latest/dist/browser.js"></script>
   <script>
-    new cursoreffects.clockCursor();
-  </script>
+  window.addEventListener("load", (event) => {
+    new textFlag({ 
+      text: "hello, feel free to checkout my projects", 
+      color: ["#15bf31"]
+    });
+  });
+</script>
 </body>
 </html>
