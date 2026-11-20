@@ -39,6 +39,13 @@
 
 /* Base Styles
   –––––––––––––––––––––––––––––––––––––––––––––––––– */
+html {
+	/* Prevent horizontal scroll caused by animated pseudo-elements on mobile */
+	overflow-x:hidden;
+	/* Smooth momentum scrolling on iOS */
+	-webkit-text-size-adjust:100%;
+}
+
 body {
 	margin:0;
 	padding:0;
@@ -47,6 +54,8 @@ body {
     font-weight:400;
 	line-height:1.6;
 	min-height:100vh;
+	min-height:100svh;          /* Small viewport height — better on mobile */
+	min-height:100dvh;          /* Dynamic viewport height — best on mobile */
 	background:linear-gradient(
 		-45deg,
 		#ffffff,
@@ -56,57 +65,51 @@ body {
 		#ffffff
 	);
 	background-size:400% 400%;
+	/* -webkit- prefix helps older iOS Safari animate background-position */
+	-webkit-animation:gradientShift 10s ease infinite;
 	animation:gradientShift 10s ease infinite;
 	transition:background 0.8s ease, color 0.8s ease;
 	position:relative;
 	overflow-x:hidden;
+	/* Prevent scroll jitter when the fixed glow moves */
+	touch-action:pan-y;
 }
 
 /* Animated Background
   –––––––––––––––––––––––––––––––––––––––––––––––––– */
+@-webkit-keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
 @keyframes gradientShift {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
+@-webkit-keyframes floatGlow {
+  0%   { opacity:0.25; -webkit-transform:scale(1)    translate(0,0);        transform:scale(1)    translate(0,0); }
+  25%  { opacity:0.55; -webkit-transform:scale(1.15) translate(-6vw,-4vh);  transform:scale(1.15) translate(-6vw,-4vh); }
+  50%  { opacity:0.40; -webkit-transform:scale(1.05) translate(-12vw,6vh);  transform:scale(1.05) translate(-12vw,6vh); }
+  75%  { opacity:0.60; -webkit-transform:scale(1.20) translate(4vw,-8vh);   transform:scale(1.20) translate(4vw,-8vh); }
+  100% { opacity:0.25; -webkit-transform:scale(1)    translate(0,0);        transform:scale(1)    translate(0,0); }
+}
 @keyframes floatGlow {
-  0% {
-    opacity: 0.25;
-    transform: scale(1) translate(0, 0);
-  }
-  25% {
-    opacity: 0.55;
-    transform: scale(1.15) translate(-6vw, -4vh);
-  }
-  50% {
-    opacity: 0.4;
-    transform: scale(1.05) translate(-12vw, 6vh);
-  }
-  75% {
-    opacity: 0.6;
-    transform: scale(1.2) translate(4vw, -8vh);
-  }
-  100% {
-    opacity: 0.25;
-    transform: scale(1) translate(0, 0);
-  }
+  0%   { opacity:0.25; transform:scale(1)    translate(0,0); }
+  25%  { opacity:0.55; transform:scale(1.15) translate(-6vw,-4vh); }
+  50%  { opacity:0.40; transform:scale(1.05) translate(-12vw,6vh); }
+  75%  { opacity:0.60; transform:scale(1.20) translate(4vw,-8vh); }
+  100% { opacity:0.25; transform:scale(1)    translate(0,0); }
 }
 
-/* Diagonal light band that sweeps across the page */
+@-webkit-keyframes sweep {
+  0%   { -webkit-transform: translateX(-120%) rotate(25deg); transform: translateX(-120%) rotate(25deg); }
+  100% { -webkit-transform: translateX(220%)  rotate(25deg); transform: translateX(220%)  rotate(25deg); }
+}
 @keyframes sweep {
-  0% {
-    transform: translateX(-120%) rotate(25deg);
-  }
-  100% {
-    transform: translateX(220%) rotate(25deg);
-  }
+  0%   { transform: translateX(-120%) rotate(25deg); }
+  100% { transform: translateX(220%)  rotate(25deg); }
 }
 
 /* Soft ambient grayscale glow blob (drifting + pulsing) */
@@ -115,8 +118,9 @@ body::before {
   position: fixed;
   top: -20%;
   left: -10%;
-  width: 60vmax;
-  height: 60vmax;
+  /* Use vmin so it never overflows on portrait phones */
+  width: 70vmin;
+  height: 70vmin;
   background: radial-gradient(
     circle at center,
     rgba(0, 0, 0, 0.10),
@@ -125,6 +129,8 @@ body::before {
   border-radius: 50%;
   pointer-events: none;
   z-index: -1;
+  will-change: transform, opacity;
+  -webkit-animation: floatGlow 9s ease-in-out infinite;
   animation: floatGlow 9s ease-in-out infinite;
 }
 
@@ -134,8 +140,9 @@ body::after {
   position: fixed;
   top: -50%;
   left: 0;
-  width: 40vmax;
-  height: 200vh;
+  /* Sized in vmin so it works on both portrait & landscape phones */
+  width: 40vmin;
+  height: 200vmin;
   background: linear-gradient(
     90deg,
     transparent 0%,
@@ -144,6 +151,8 @@ body::after {
   );
   pointer-events: none;
   z-index: -1;
+  will-change: transform;
+  -webkit-animation: sweep 12s linear infinite;
   animation: sweep 12s linear infinite;
 }
 
@@ -324,6 +333,7 @@ a:hover {
 		#000000
 	);
 	background-size:400% 400%;
+	-webkit-animation:gradientShift 10s ease infinite;
 	animation:gradientShift 10s ease infinite;
 	color:#ffffff;
 }
@@ -364,6 +374,7 @@ a:hover {
 		#000000
 	);
 	background-size:400% 400%;
+	-webkit-animation:gradientShift 10s ease infinite;
 	animation:gradientShift 10s ease infinite;
 	color:#ffffff;
 }
@@ -446,25 +457,30 @@ ul li {
   –––––––––––––––––––––––––––––––––––––––––––––––––– */
 @media (prefers-reduced-motion: reduce) {
 	body {
+		-webkit-animation:none;
 		animation:none;
 		background:#ffffff;
 	}
 	:root.theme-dark body {
+		-webkit-animation:none;
 		animation:none;
 		background:#000000;
 	}
 	:root.theme-auto body {
+		-webkit-animation:none;
 		animation:none;
 		background:#ffffff;
 	}
 	@media (prefers-color-scheme:dark) {
 		:root.theme-auto body {
+			-webkit-animation:none;
 			animation:none;
 			background:#000000;
 		}
 	}
 	body::before,
 	body::after {
+		-webkit-animation:none;
 		animation:none;
 	}
 }
