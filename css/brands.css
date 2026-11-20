@@ -370,6 +370,11 @@
 	--button-border:1px solid #FFFFFF;
 }
 
+.button-ngl {
+	--button-text:#ffffff;
+	background-image:linear-gradient(-135deg,#c84600,#b900b4,#ffd83c);
+}
+
 /* Notion */
 .button-notion {
 	--button-text:#000000;
