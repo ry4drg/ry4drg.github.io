@@ -1,13 +1,6 @@
-/*
-* LittleLink
-* https://littlelink.io
-* Free to use under the MIT license
-* http://www.opensource.org/licenses/mit-license.php
-*/
-
 /* Grid
   –––––––––––––––––––––––––––––––––––––––––––––––––– */
-  .container {
+.container {
 	position:relative;
 	width:100%;
 	max-width:37.5rem;     				/* 600px */
@@ -46,14 +39,112 @@
 
 /* Base Styles
   –––––––––––––––––––––––––––––––––––––––––––––––––– */
-  body {
+body {
 	margin:0;
 	padding:0;
-	background-color:#ffffff;
 	color:#1a1a1a;
 	font-family:"Open Sans",system-ui;
     font-weight:400;
 	line-height:1.6;
+	min-height:100vh;
+	background:linear-gradient(
+		-45deg,
+		#ffffff,
+		#dcdcdc,
+		#bdbdbd,
+		#e8e8e8,
+		#ffffff
+	);
+	background-size:400% 400%;
+	animation:gradientShift 10s ease infinite;
+	transition:background 0.8s ease, color 0.8s ease;
+	position:relative;
+	overflow-x:hidden;
+}
+
+/* Animated Background
+  –––––––––––––––––––––––––––––––––––––––––––––––––– */
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes floatGlow {
+  0% {
+    opacity: 0.25;
+    transform: scale(1) translate(0, 0);
+  }
+  25% {
+    opacity: 0.55;
+    transform: scale(1.15) translate(-6vw, -4vh);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(1.05) translate(-12vw, 6vh);
+  }
+  75% {
+    opacity: 0.6;
+    transform: scale(1.2) translate(4vw, -8vh);
+  }
+  100% {
+    opacity: 0.25;
+    transform: scale(1) translate(0, 0);
+  }
+}
+
+/* Diagonal light band that sweeps across the page */
+@keyframes sweep {
+  0% {
+    transform: translateX(-120%) rotate(25deg);
+  }
+  100% {
+    transform: translateX(220%) rotate(25deg);
+  }
+}
+
+/* Soft ambient grayscale glow blob (drifting + pulsing) */
+body::before {
+  content: "";
+  position: fixed;
+  top: -20%;
+  left: -10%;
+  width: 60vmax;
+  height: 60vmax;
+  background: radial-gradient(
+    circle at center,
+    rgba(0, 0, 0, 0.10),
+    transparent 60%
+  );
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: -1;
+  animation: floatGlow 9s ease-in-out infinite;
+}
+
+/* Sweeping shimmer band */
+body::after {
+  content: "";
+  position: fixed;
+  top: -50%;
+  left: 0;
+  width: 40vmax;
+  height: 200vh;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 0, 0, 0.05) 50%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: -1;
+  animation: sweep 12s linear infinite;
 }
 
 /* Base Typography Settings
@@ -138,12 +229,12 @@ footer {
 
 /* Links
   –––––––––––––––––––––––––––––––––––––––––––––––––– */
-  a {
-	color:#2457F5;
+a {
+	color:#000000;
 	text-decoration:underline;
 }
 a:hover {
-	color:#083BDA;
+	color:#555555;
 }
 
 /* Buttons
@@ -220,18 +311,42 @@ a:hover {
 	color-scheme:dark;
 }
 :root.theme-dark :focus-visible {
-	outline: 2px solid #4899F7;
+	outline: 2px solid #ffffff;
 	outline-offset: 2px;
   }
 :root.theme-dark body {
-	background-color:#121212;
+	background:linear-gradient(
+		-45deg,
+		#000000,
+		#2a2a2a,
+		#454545,
+		#1a1a1a,
+		#000000
+	);
+	background-size:400% 400%;
+	animation:gradientShift 10s ease infinite;
 	color:#ffffff;
 }
+:root.theme-dark body::before {
+	background:radial-gradient(
+		circle at center,
+		rgba(255, 255, 255, 0.12),
+		transparent 60%
+	);
+}
+:root.theme-dark body::after {
+	background:linear-gradient(
+		90deg,
+		transparent 0%,
+		rgba(255, 255, 255, 0.06) 50%,
+		transparent 100%
+	);
+}
 :root.theme-dark a:not(.button) {
-	color:#4899F7;
+	color:#ffffff;
 }
 :root.theme-dark a:not(.button):hover {
-	color:#7AB8FF;
+	color:#b3b3b3;
 }
 
 /* Auto theme */
@@ -240,18 +355,42 @@ a:hover {
 }
 @media (prefers-color-scheme:dark) {
 	:root.theme-auto body {
-	background-color:#121212;
+	background:linear-gradient(
+		-45deg,
+		#000000,
+		#2a2a2a,
+		#454545,
+		#1a1a1a,
+		#000000
+	);
+	background-size:400% 400%;
+	animation:gradientShift 10s ease infinite;
 	color:#ffffff;
 }
+:root.theme-auto body::before {
+	background:radial-gradient(
+		circle at center,
+		rgba(255, 255, 255, 0.12),
+		transparent 60%
+	);
+}
+:root.theme-auto body::after {
+	background:linear-gradient(
+		90deg,
+		transparent 0%,
+		rgba(255, 255, 255, 0.06) 50%,
+		transparent 100%
+	);
+}
 :root.theme-auto :focus-visible {
-    outline: 2px solid #4899F7;
+    outline: 2px solid #ffffff;
     outline-offset: 2px;
   }
 :root.theme-auto a:not(.button) {
-	color:#4899F7;
+	color:#ffffff;
 }
 :root.theme-auto a:not(.button):hover {
-	color:#7AB8FF;
+	color:#b3b3b3;
 }
 }
 
@@ -300,6 +439,33 @@ ul li {
 	}
 	section {
 	margin:var(--spacing-l) 0;
+	}
+}
+
+/* Reduced Motion
+  –––––––––––––––––––––––––––––––––––––––––––––––––– */
+@media (prefers-reduced-motion: reduce) {
+	body {
+		animation:none;
+		background:#ffffff;
+	}
+	:root.theme-dark body {
+		animation:none;
+		background:#000000;
+	}
+	:root.theme-auto body {
+		animation:none;
+		background:#ffffff;
+	}
+	@media (prefers-color-scheme:dark) {
+		:root.theme-auto body {
+			animation:none;
+			background:#000000;
+		}
+	}
+	body::before,
+	body::after {
+		animation:none;
 	}
 }
 
