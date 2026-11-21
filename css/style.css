@@ -108,7 +108,7 @@ body::after {
 @media (min-width: 48rem) {
 	body::before {
 		/* On PC, blow it up and blur it out so content pops */
-		filter: blur(50px);
+		filter: blur(4px);
 		transform: scale(1.1); /* Zooms in slightly to hide edge blur */
 	}
 	
