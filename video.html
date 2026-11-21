@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video</title>
+  <link rel="icon" type="image/png" href="images/Link-Chain--Streamline-Flex-Gradient.png"> <!--  Update this with your own favicon -->
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      height: 100%;
+    }
+
+    /* ===== Your Provided Background Image & Overlay ===== */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      height: 100lvh;
+      
+      /* --- CHANGE 'background.jpeg' TO YOUR EXACT IMAGE FILE NAME --- */
+      background-image: url('./css/background.jpeg'); 
+      background-position: center center;
+      background-repeat: no-repeat;
+      
+      /* Mobile first: Display the image perfectly */
+      background-size: cover; 
+      
+      z-index: -2;
+      transition: filter 0.5s ease, transform 0.5s ease;
+    }
+
+    /* Dark tint overlay to ensure white text is always readable */
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      height: 100lvh;
+      /* A subtle dark blue/black gradient */
+      background: linear-gradient(
+        to bottom,
+        rgba(11, 16, 30, 0.2) 0%,
+        rgba(11, 16, 30, 0.6) 100%
+      );
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* Desktop Layout (Screens wider than 768px) */
+    @media (min-width: 48rem) {
+      body::before {
+        /* On PC, blow it up and blur it out so content pops */
+        filter: blur(4px);
+        transform: scale(1.1); /* Zooms in slightly to hide edge blur */
+      }
+      
+      body::after {
+        /* Darken the blurred background a bit more on PC */
+        background: rgba(11, 16, 30, 0.4);
+      }
+    }
+
+    /* ===== Page Layout ===== */
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    /* ===== Video Container ===== */
+    .video-container {
+      position: relative;
+      z-index: 2; /* Keeps video above the background layers */
+      width: 100%;
+      max-width: 900px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #000;
+      
+      /* Drop shadow to separate the video from the dark background */
+      box-shadow: 
+        0 25px 50px -12px rgba(0, 0, 0, 0.7),
+        0 0 0 1px rgba(255, 255, 255, 0.15);
+    }
+
+    video {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 16 / 9;   /* use 9/16 for vertical/portrait videos */
+      background: #000;
+    }
+
+    /* ===== Back Link ===== */
+    .back {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 3;
+      color: #ffffff;
+      background: rgba(0, 0, 0, 0.35);
+      padding: 8px 16px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transition: background 0.2s, transform 0.2s;
+    }
+    
+    .back:hover {
+      background: rgba(0, 0, 0, 0.6);
+      transform: translateY(-1px);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Back Button -->
+  <a href="./index.html" class="back">← Back</a>
+
+  <!-- Video -->
+  <div class="video-container">
+    <video
+      src="./video/4nOlfyNhpdfoJMAPSdD7+s50vvwTystA.mp4"
+      autoplay
+      muted
+      loop
+      playsinline
+      controls
+      preload="auto"
+    >
+      Your browser does not support the video tag.
+    </video>
+  </div>
+
+</body>
+</html>
