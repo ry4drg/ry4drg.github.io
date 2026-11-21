@@ -37,17 +37,18 @@
 }
 }
 
-/* Base Styles
+/* Base Styles & Image Background
   –––––––––––––––––––––––––––––––––––––––––––––––––– */
 html {
 	overflow-x:hidden;
 	-webkit-text-size-adjust:100%;
+	background-color: #0b101e; /* Matches the dark blue of your image */
 }
 
 body {
 	margin:0;
 	padding:0;
-	color:#1a1a1a;
+	color:#ffffff; /* White text for contrast against the dark image */
 	font-family:"Open Sans",system-ui;
 	font-weight:400;
 	line-height:1.6;
@@ -56,19 +57,65 @@ body {
 	min-height:100dvh;
 	position:relative;
 	overflow-x:hidden;
+}
 
-	/* ---------------------------------------------------------------
-	   3D LIQUID CHROME / METALLIC WAVY BACKGROUND
-	   • Built entirely with inline SVG to guarantee high definition
-	   • Uses overlapping Bézier curves and linear gradients to 
-	     simulate light reflections and deep shadows.
-	   --------------------------------------------------------------- */
-	background-color:#e2e2e2;
-	background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='800' viewBox='0 0 600 800' preserveAspectRatio='xMidYMid slice'><defs><linearGradient id='chrome1' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23ffffff'/><stop offset='30%' stop-color='%23999999'/><stop offset='50%' stop-color='%23ffffff'/><stop offset='70%' stop-color='%23333333'/><stop offset='100%' stop-color='%23eeeeee'/></linearGradient><linearGradient id='dark1' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23222222'/><stop offset='50%' stop-color='%23000000'/><stop offset='100%' stop-color='%23555555'/></linearGradient><linearGradient id='chrome2' x1='100%' y1='0%' x2='0%' y2='100%'><stop offset='0%' stop-color='%23f0f0f0'/><stop offset='20%' stop-color='%23ffffff'/><stop offset='60%' stop-color='%23777777'/><stop offset='80%' stop-color='%23cccccc'/><stop offset='100%' stop-color='%23222222'/></linearGradient></defs><rect width='600' height='800' fill='%23e2e2e2'/><path d='M-100,0 C100,200 400,50 700,300 L700,0 Z' fill='url(%23dark1)'/><path d='M-100,800 C200,600 100,400 400,300 C600,250 800,450 800,800 Z' fill='url(%23chrome1)'/><path d='M-50,200 C150,400 50,600 300,800 L-50,800 Z' fill='url(%23dark1)'/><path d='M400,0 C250,200 350,400 600,500 L600,0 Z' fill='url(%23chrome2)'/><path d='M200,800 C100,600 300,400 100,200 C0,50 -50,-50 0,-50 L0,800 Z' fill='url(%23chrome1)' opacity='0.8'/><path d='M500,100 C400,300 600,500 800,400 L800,100 Z' fill='%23ffffff' opacity='0.6'/><path d='M0,500 C200,500 300,700 150,900 L0,900 Z' fill='url(%23chrome2)'/><path d='M-100,300 C100,350 200,100 400,150 L400,-50 Z' fill='%23ffffff' opacity='0.4'/></svg>");
-	background-size:cover;
-	background-position:center;
-	background-attachment:fixed;
-	transition:background 0.8s ease, color 0.8s ease;
+/* 
+   THE BACKGROUND LAYERS
+   Mobile: The image covers the screen.
+   Desktop: The image fills the screen but is heavily blurred.
+*/
+body::before {
+	content: "";
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	height: 100lvh;
+	
+	/* --- CHANGE 'background.jpg' TO YOUR EXACT IMAGE FILE NAME --- */
+	background-image: url('background.jpeg'); 
+	background-position: center center;
+	background-repeat: no-repeat;
+	
+	/* Mobile first: Display the image perfectly */
+	background-size: cover; 
+	
+	z-index: -2;
+	transition: filter 0.5s ease, transform 0.5s ease;
+}
+
+/* Dark tint overlay to ensure white text is always readable */
+body::after {
+	content: "";
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	height: 100lvh;
+	/* A subtle dark blue/black gradient */
+	background: linear-gradient(
+		to bottom,
+		rgba(11, 16, 30, 0.2) 0%,
+		rgba(11, 16, 30, 0.6) 100%
+	);
+	z-index: -1;
+	pointer-events: none;
+}
+
+/* Desktop Layout (Screens wider than 768px) */
+@media (min-width: 48rem) {
+	body::before {
+		/* On PC, blow it up and blur it out so content pops */
+		filter: blur(50px);
+		transform: scale(1.1); /* Zooms in slightly to hide edge blur */
+	}
+	
+	body::after {
+		/* Darken the blurred background a bit more on PC */
+		background: rgba(11, 16, 30, 0.4);
+	}
 }
 
 /* Base Typography Settings
@@ -101,8 +148,8 @@ body {
 	margin-left: auto;
 	margin-right: auto;
 	display: block;
-	/* Added a slight shadow to help it pop against the wavy background */
-	box-shadow: 0 10px 30px rgba(0,0,0,0.15); 
+	/* Glowing shadow to blend with the chrome theme */
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 0 3px rgba(255, 255, 255, 0.1);
 }
 
 /* Typography Scale */
@@ -115,8 +162,7 @@ h1 {
 	word-wrap:break-word;
 	overflow-wrap:break-word;
 	hyphens:auto;
-	/* Added a subtle text shadow so text stays readable on light curves */
-	text-shadow: 0 2px 4px rgba(255,255,255,0.8);
+	text-shadow: 0 2px 12px rgba(0,0,0,0.6);
 }
 body {
 	font-size:var(--scale-1);
@@ -126,14 +172,14 @@ body {
 	margin:0 0 var(--spacing-xl) 0;
 	font-size:var(--scale-1);
 	line-height:1.6;
-	/* Ensure paragraphs remain highly readable over the dark/light waves */
-	text-shadow: 0 1px 2px rgba(255,255,255,0.8);
+	text-shadow: 0 1px 5px rgba(0,0,0,0.7);
 }
 
 /* Footer */
 footer {
 	margin:var(--spacing-xxl) 0;
 	font-size:var(--scale-0);
+	text-shadow: 0 1px 5px rgba(0,0,0,0.7);
 }
 
 /* Responsive adjustments */
@@ -147,12 +193,13 @@ footer {
 
 /* Links */
 a {
-	color:#000000;
+	color:#8cb4ff; /* Light blue to match the theme */
 	text-decoration:underline;
 	font-weight:600;
+	transition: color 0.2s ease;
 }
 a:hover {
-	color:#555555;
+	color:#ffffff;
 }
 
 /* Buttons */
@@ -174,21 +221,26 @@ a:hover {
   font-weight: 700;
   text-decoration: none;
   white-space: normal;
-  /* Default button updated slightly for better contrast on the new bg */
-  background-color: var(--button-background, rgba(255,255,255,0.8));
-  color: var(--button-text, #000000);
-  border: var(--button-border, 1px solid rgba(0,0,0,0.1));
+  
+  /* Glassmorphism effect: Frosted glass over the blue background */
+  background-color: var(--button-background, rgba(255, 255, 255, 0.1));
+  color: var(--button-text, #ffffff);
+  border: var(--button-border, 1px solid rgba(255, 255, 255, 0.2));
   border-radius: 0.5rem;
   cursor: pointer;
   box-sizing: border-box;
   margin: 0 auto 1rem;
   text-align: center;
   line-height: 1.3;
-  backdrop-filter: blur(4px);
-  transition: background 0.2s ease, transform 0.2s ease;
+  
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
 }
 .button:hover, button:hover {
-	background-color: var(--button-background, rgba(255,255,255,1));
+	background-color: var(--button-background, rgba(255, 255, 255, 0.2));
+	border-color: rgba(255, 255, 255, 0.4);
 	transform: scale(1.02);
 }
 
@@ -205,60 +257,10 @@ a:hover {
 .avatar--rounded { border-radius: 50%; }
 .avatar--soft { border-radius: 0.5rem; }
 
-/* Theme System */
-:root.theme-light { color-scheme:light; }
-
-:root.theme-dark { color-scheme:dark; }
-:root.theme-dark :focus-visible {
-	outline: 2px solid #ffffff;
-	outline-offset: 2px;
-}
-:root.theme-dark body {
-	color:#ffffff;
-	/* Invert the SVG gradient specifically for dark mode */
-	background-color:#1a1a1a;
-	background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='800' viewBox='0 0 600 800' preserveAspectRatio='xMidYMid slice'><defs><linearGradient id='chrome1' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23000000'/><stop offset='30%' stop-color='%23444444'/><stop offset='50%' stop-color='%23000000'/><stop offset='70%' stop-color='%23cccccc'/><stop offset='100%' stop-color='%23111111'/></linearGradient><linearGradient id='dark1' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23dddddd'/><stop offset='50%' stop-color='%23ffffff'/><stop offset='100%' stop-color='%23aaaaaa'/></linearGradient><linearGradient id='chrome2' x1='100%' y1='0%' x2='0%' y2='100%'><stop offset='0%' stop-color='%23111111'/><stop offset='20%' stop-color='%23000000'/><stop offset='60%' stop-color='%23888888'/><stop offset='80%' stop-color='%23333333'/><stop offset='100%' stop-color='%23dddddd'/></linearGradient></defs><rect width='600' height='800' fill='%231a1a1a'/><path d='M-100,0 C100,200 400,50 700,300 L700,0 Z' fill='url(%23dark1)'/><path d='M-100,800 C200,600 100,400 400,300 C600,250 800,450 800,800 Z' fill='url(%23chrome1)'/><path d='M-50,200 C150,400 50,600 300,800 L-50,800 Z' fill='url(%23dark1)'/><path d='M400,0 C250,200 350,400 600,500 L600,0 Z' fill='url(%23chrome2)'/><path d='M200,800 C100,600 300,400 100,200 C0,50 -50,-50 0,-50 L0,800 Z' fill='url(%23chrome1)' opacity='0.8'/><path d='M500,100 C400,300 600,500 800,400 L800,100 Z' fill='%23000000' opacity='0.6'/><path d='M0,500 C200,500 300,700 150,900 L0,900 Z' fill='url(%23chrome2)'/><path d='M-100,300 C100,350 200,100 400,150 L400,-50 Z' fill='%23000000' opacity='0.4'/></svg>");
-	background-size:cover;
-	background-position:center;
-	background-attachment:fixed;
-}
-:root.theme-dark h1, :root.theme-dark .container p {
-	text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-}
-:root.theme-dark a:not(.button) { color:#ffffff; }
-:root.theme-dark a:not(.button):hover { color:#b3b3b3; }
-:root.theme-dark .button, :root.theme-dark button {
-	background-color: var(--button-background, rgba(0,0,0,0.8));
-	color: #ffffff;
-	border: 1px solid rgba(255,255,255,0.2);
-}
-:root.theme-dark .button:hover, :root.theme-dark button:hover {
-	background-color: var(--button-background, rgba(0,0,0,1));
-}
-
-/* Auto theme */
-:root.theme-auto { color-scheme:light dark; }
-@media (prefers-color-scheme:dark) {
-	:root.theme-auto body {
-		color:#ffffff;
-		background-color:#1a1a1a;
-		background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='800' viewBox='0 0 600 800' preserveAspectRatio='xMidYMid slice'><defs><linearGradient id='chrome1' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23000000'/><stop offset='30%' stop-color='%23444444'/><stop offset='50%' stop-color='%23000000'/><stop offset='70%' stop-color='%23cccccc'/><stop offset='100%' stop-color='%23111111'/></linearGradient><linearGradient id='dark1' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' stop-color='%23dddddd'/><stop offset='50%' stop-color='%23ffffff'/><stop offset='100%' stop-color='%23aaaaaa'/></linearGradient><linearGradient id='chrome2' x1='100%' y1='0%' x2='0%' y2='100%'><stop offset='0%' stop-color='%23111111'/><stop offset='20%' stop-color='%23000000'/><stop offset='60%' stop-color='%23888888'/><stop offset='80%' stop-color='%23333333'/><stop offset='100%' stop-color='%23dddddd'/></linearGradient></defs><rect width='600' height='800' fill='%231a1a1a'/><path d='M-100,0 C100,200 400,50 700,300 L700,0 Z' fill='url(%23dark1)'/><path d='M-100,800 C200,600 100,400 400,300 C600,250 800,450 800,800 Z' fill='url(%23chrome1)'/><path d='M-50,200 C150,400 50,600 300,800 L-50,800 Z' fill='url(%23dark1)'/><path d='M400,0 C250,200 350,400 600,500 L600,0 Z' fill='url(%23chrome2)'/><path d='M200,800 C100,600 300,400 100,200 C0,50 -50,-50 0,-50 L0,800 Z' fill='url(%23chrome1)' opacity='0.8'/><path d='M500,100 C400,300 600,500 800,400 L800,100 Z' fill='%23000000' opacity='0.6'/><path d='M0,500 C200,500 300,700 150,900 L0,900 Z' fill='url(%23chrome2)'/><path d='M-100,300 C100,350 200,100 400,150 L400,-50 Z' fill='%23000000' opacity='0.4'/></svg>");
-		background-size:cover;
-		background-position:center;
-		background-attachment:fixed;
-	}
-	:root.theme-auto h1, :root.theme-auto .container p { text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
-	:root.theme-auto :focus-visible {
-		outline: 2px solid #ffffff;
-		outline-offset: 2px;
-	}
-	:root.theme-auto a:not(.button) { color:#ffffff; }
-	:root.theme-auto a:not(.button):hover { color:#b3b3b3; }
-	:root.theme-auto .button, :root.theme-auto button {
-		background-color: var(--button-background, rgba(0,0,0,0.8));
-		color: #ffffff;
-		border: 1px solid rgba(255,255,255,0.2);
-	}
+/* Theme System 
+   (Forced dark theme because the image is dark blue) */
+:root, :root.theme-light, :root.theme-dark, :root.theme-auto { 
+	color-scheme: dark; 
 }
 
 /* Privacy Page Styles */
@@ -274,11 +276,13 @@ h2 {
 	font-size:var(--scale-3);
 	font-weight:700;
 	margin-bottom:var(--spacing-m);
+	text-shadow: 0 2px 12px rgba(0,0,0,0.6);
 }
 h3 {
 	font-size:var(--scale-2);
 	font-weight:600;
 	margin:var(--spacing-l) 0 var(--spacing-s) 0;
+	text-shadow: 0 1px 5px rgba(0,0,0,0.7);
 }
 ul {
 	list-style:none;
@@ -287,6 +291,7 @@ ul {
 }
 ul li {
 	margin-bottom:var(--spacing-xs);
+	text-shadow: 0 1px 5px rgba(0,0,0,0.7);
 }
 @media (max-width:34.375rem) {
 	h2 { font-size:var(--scale-2); }
@@ -297,9 +302,11 @@ ul li {
 /* Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
 	body,
-	:root.theme-dark body,
-	:root.theme-auto body {
+	body::before,
+	button,
+	.button {
 		transition:none;
+		transform:none !important;
 	}
 }
 
